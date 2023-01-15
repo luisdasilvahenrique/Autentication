@@ -1,8 +1,7 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 import Router from "next/router";
-import { api } from "../service/api";
+import { api, singOut } from "../service/api";
 import { parseCookies, setCookie } from 'nookies'
-import { response } from "express";
 
 type User = {
     email: string;
@@ -39,6 +38,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 const { email, permissions, roles } = response.data;
 
                 setUser({email, permissions, roles});
+            })
+            .catch(() => {
+                singOut();
             })
         }
     },[])
